@@ -5,7 +5,8 @@ function createLoadJS() {
   function exec(options) {
     if (typeof options === "string") {
       options = {
-        url: options
+        url: options,
+        debug: false
       };
     }
 
@@ -13,7 +14,9 @@ function createLoadJS() {
     var cacheEntry = cache[cacheId];
 
     if (cacheEntry) {
-      console.log("load-js: cache hit", cacheId);
+      if (!!options.debug) {
+        console.log("load-js: cache hit", cacheId);
+      }
       return cacheEntry;
     }
     else if (options.allowExternal !== false) {
