@@ -28,6 +28,7 @@ loadJS is a method that loads scripts concurrently using script tags. loadJS tak
 - `text`: Script text to execute. Required if no `url` is provided.
 - `cache`: flag to determine if item with ID or URL is to be cached. defaults to `true`.
 - `allowExternal`: flag to handle situations when the DOM already has a script element with the same ID or URL as what loadJS is being told to load. By default, loadJS will use script elements that already exist in the DOM. To turn off this behavior, set `allowExternal` to false.
+- `debug`: flag to show debug message. defaults to `false`.
 
 Some of these options are described in detail [here](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script).
 
