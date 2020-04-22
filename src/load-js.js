@@ -1,16 +1,33 @@
+var cache = {};
+
+function randomString(length) {
+  var result           = "";
+  var characters       = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  var charactersLength = characters.length;
+  for ( var i = 0; i < length; i++ ) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+  }
+  return result;
+}
+
 function createLoadJS() {
-  var cache = {};
   var head = document.getElementsByTagName("head")[0] || document.documentElement;
 
   function exec(options) {
+    
     if (typeof options === "string") {
       options = {
         url: options,
+        id: randomString(8),
         debug: false
       };
     }
 
-    var cacheId = options.id || options.url;
+    if (!options.id) {
+      throw new Error("load-js: must provide a id for load js");
+    }
+    
+    var cacheId = options.id;
     var cacheEntry = cache[cacheId];
 
     if (cacheEntry) {
@@ -123,5 +140,38 @@ function createLoadJS() {
   }
 }
 
+
+function unLoadJS(){
+  
+  function exec(options){
+    if (typeof options === "string") {
+      options = {
+        id: options,
+      };
+    }
+
+    if ( !options.id ) {
+      throw new Error("load-js: must provide a id or array ids to unload");
+    }
+      // Find all script elements and remove them.
+    Array.prototype.slice
+        .call(document.querySelectorAll(`script[id="${options.id}"]`))
+        .forEach(el => {
+          delete cache[el.id];
+          console.log("deleted cache "+el.id);
+          el.parentNode.removeChild(el);
+        });
+    
+    return true;
+  }
+
+  return function unload(items) {
+    return items instanceof Array ?
+        items.map(exec) :
+        exec(items);
+  }
+}
+
 module.exports = createLoadJS();
 module.exports.create = createLoadJS;
+module.exports.unload = unLoadJS;
