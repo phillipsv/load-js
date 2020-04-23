@@ -10,7 +10,7 @@ function randomString(length) {
   return result;
 }
 
-function createLoadJS() {
+function loadJS(items) {
   var head = document.getElementsByTagName("head")[0] || document.documentElement;
 
   function exec(options) {
@@ -133,15 +133,15 @@ function createLoadJS() {
     }
   }
 
-  return function load(items) {
-    return items instanceof Array ?
-      Promise.all(items.map(exec)) :
-      exec(items);
-  }
+  
+  return items instanceof Array ?
+    Promise.all(items.map(exec)) :
+    exec(items);
+  
 }
 
 
-function unLoadJS(){
+function unLoadJS(items){
   
   function exec(options){
     if (typeof options === "string") {
@@ -165,13 +165,13 @@ function unLoadJS(){
     return true;
   }
 
-  return function unload(items) {
-    return items instanceof Array ?
-        items.map(exec) :
-        exec(items);
-  }
+  
+  return items instanceof Array ?
+      items.map(exec) :
+      exec(items);
+  
 }
 
-module.exports = createLoadJS();
-module.exports.create = createLoadJS;
+//module.exports = createLoadJS();
+module.exports.load = loadJS;
 module.exports.unload = unLoadJS;
