@@ -158,7 +158,7 @@ function unLoadJS(items) {
             throw new Error("load-js: must provide a id or array ids to unload");
         }
         
-        let response = {};
+        let response = [];
         // Find all script elements and remove them.
         Array.prototype.slice
             .call(document.querySelectorAll(`script[id="${options.id}"]`))
