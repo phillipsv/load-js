@@ -55,6 +55,7 @@ function loadJS(items) {
     }
     
     if(options.selector){
+      console.log(options.selector);
       element = document.querySelector(options.selector);
       console.log(element);
       if(element){
