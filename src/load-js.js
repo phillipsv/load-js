@@ -11,9 +11,9 @@ function randomString(length) {
 }
 
 function loadJS(items) {
-  var head = document.getElementsByTagName("head")[0] || document.documentElement;
 
   function exec(options) {
+    var head = document.getElementsByTagName("head")[0] || document.documentElement;
     
     if (typeof options === "string") {
       options = {
@@ -56,9 +56,11 @@ function loadJS(items) {
     
     if(options.selector){
       element = document.querySelector(options.selector);
+      console.log(element);
       if(element){
         head = element;
       }
+      console.log(head);
     }
     var pending = (options.url ? loadScript : runScript)(head, createScript(options));
 
@@ -75,6 +77,7 @@ function loadJS(items) {
   }
 
   function loadScript(head, script) {
+    console.log(head);
     return new Promise(function(resolve, reject) {
       // Handle Script loading
       var done = false;
@@ -138,8 +141,7 @@ function loadJS(items) {
       return script;
     }
   }
-
-  console.log(cache);
+  
   return items instanceof Array ?
     Promise.all(items.map(exec)) :
     exec(items);
@@ -166,7 +168,6 @@ function unLoadJS(items){
           delete cache[el.id];
           el.parentNode.removeChild(el);
         });
-    console.log(cache);
     return true;
   }
 
