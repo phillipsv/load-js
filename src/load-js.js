@@ -53,7 +53,13 @@ function loadJS(items) {
     if (!options.url && !options.text) {
       throw new Error("load-js: must provide a url or text to load");
     }
-
+    
+    if(options.selector){
+      element = document.querySelector(options.selector);
+      if(element){
+        head = element;
+      }
+    }
     var pending = (options.url ? loadScript : runScript)(head, createScript(options));
 
     if (cacheId && options.cache !== false) {
@@ -133,7 +139,7 @@ function loadJS(items) {
     }
   }
 
-  
+  console.log(cache);
   return items instanceof Array ?
     Promise.all(items.map(exec)) :
     exec(items);
@@ -158,10 +164,9 @@ function unLoadJS(items){
         .call(document.querySelectorAll(`script[id="${options.id}"]`))
         .forEach(el => {
           delete cache[el.id];
-          console.log("deleted cache "+el.id);
           el.parentNode.removeChild(el);
         });
-    
+    console.log(cache);
     return true;
   }
 
